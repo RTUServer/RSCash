@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.List;
 import java.util.UUID;
 
 public class CashManager {
@@ -16,14 +17,14 @@ public class CashManager {
 
     public void addPlayer(UUID uuid) {
         for (String cash : config.getCashMap().keySet()) {
-            JsonObject result = storage.get(cash, Pair.of("uuid", uuid.toString()));
-            if (result == null) {
+            List<JsonObject> result = storage.get(cash, Pair.of("uuid", uuid.toString()));
+            if (result.isEmpty()) {
                 JsonObject object = new JsonObject();
                 object.addProperty("uuid", uuid.toString());
                 object.addProperty("value", 0);
                 storage.add(cash, object);
             } else {
-                JsonElement element = result.get("value");
+                JsonElement element = result.get(0).get("value");
                 if (element == null || element.isJsonNull()) {
                     storage.set(cash, Pair.of("uuid", uuid.toString()), Pair.of("value", 0));
                 }
@@ -36,9 +37,9 @@ public class CashManager {
     }
 
     public Integer getPlayerCash(UUID uuid, String cash) {
-        JsonObject result = storage.get(cash, Pair.of("uuid", uuid.toString()));
-        if (result == null || result.isJsonNull()) return null;
-        JsonElement element = result.get("value");
+        List<JsonObject> result = storage.get(cash, Pair.of("uuid", uuid.toString()));
+        if (result.isEmpty() || result.get(0).isJsonNull()) return null;
+        JsonElement element = result.get(0).get("value");
         if (element != null && !element.isJsonNull()) {
             return element.getAsInt();
         }
