@@ -1,0 +1,4 @@
+Example:
+  itemsadder:cash:coin_1: 1
+  itemsadder:cash:coin_1000: 1000
+  oraxen:cash:coin_10000: 10000

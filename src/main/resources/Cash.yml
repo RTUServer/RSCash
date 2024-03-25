@@ -1,0 +1,4 @@
+Example:
+  displayName: "<rainbow>Example</rainbow>"
+  description: "<red>Example</red>\n<gray>cash</gray>"
+  maxCash: 100000000

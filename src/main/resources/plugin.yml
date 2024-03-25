@@ -1,0 +1,17 @@
+name: RSCash
+version: '${version}'
+main: com.github.ipecter.rtu.cash.RSCash
+description: RSCash
+api-version: 1.17
+depend: [ RSLib ]
+softdepend: [ PlaceholderAPI ]
+authors: [ IPECTER ]
+commands:
+  rscash:
+permissions:
+  rscash.reload:
+    default: op
+  rscash.modify:
+    default: true
+  rscash.check:
+    default: op
