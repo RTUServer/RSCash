@@ -12,6 +12,7 @@ import com.github.ipecter.rtuserver.lib.util.data.MongoInfo;
 import com.github.ipecter.rtuserver.lib.util.data.MongoStorage;
 import com.github.ipecter.rtuserver.lib.util.data.Storage;
 import com.github.ipecter.rtuserver.lib.util.support.ItemUtil;
+import com.google.common.io.Files;
 import lombok.Getter;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.configuration.ConfigurationSection;
@@ -31,6 +32,7 @@ public class ConfigManager {
     private final DataConfig data = new DataConfig();
     private final Map<String, String> translationMap = new HashMap<>();
 
+    private final List<String> storageList = new ArrayList<>();
     @Getter
     private final Map<String, Cash> cashMap = new HashMap<>();
     @Getter //<아이템ID, 코인>
@@ -102,24 +104,33 @@ public class ConfigManager {
         data.setDatabasePassword(config.getString("database.password", data.getDatabasePassword()));
         data.setDatabaseName(config.getString("database.database", data.getDatabaseName()));
         Storage storage = RSCash.getInstance().getStorage();
+        boolean notChanged = new ArrayList<>(cashMap.keySet()).equals(storageList);
         if (data.isDatabaseUse()) {
-            if (!(storage instanceof MongoStorage)) {
-                if (storage != null) storage.close();
-                RSCash.getInstance().setStorage(new MongoStorage(new MongoInfo(data.getDatabaseIp(), data.getDatabasePort(), data.getDatabaseUsername(), data.getDatabasePassword(), data.getDatabaseName())));
-                RSCash.getInstance().console(ComponentUtil.miniMessage("Storage: MongoDB"));
-            }
+            if (notChanged && storage instanceof MongoStorage) return;
+            if (storage != null) storage.close();
+            RSCash.getInstance().setStorage(new MongoStorage(new MongoInfo(data.getDatabaseIp(), data.getDatabasePort(), data.getDatabaseUsername(), data.getDatabasePassword(), data.getDatabaseName())));
+            RSCash.getInstance().console(ComponentUtil.miniMessage("Storage: MongoDB"));
         } else {
             for (String cash : cashMap.keySet()) {
                 FileUtil.getResource(dataFolder + "/Data", cash + ".json");
             }
-            File[] files = FileUtil.getResourceFolder(dataFolder + "/Data").listFiles();
-            assert files != null;
-            if (!(storage instanceof JsonStorage)) {
-                if (storage != null) storage.close();
-                RSCash.getInstance().setStorage(new JsonStorage(files, data.getSavePeriod()));
-                RSCash.getInstance().console(ComponentUtil.miniMessage("Storage: JsonFile"));
+            File[] listFiles = FileUtil.getResourceFolder(dataFolder + "/Data").listFiles();
+            File[] files = new File[cashMap.size()];
+            assert listFiles != null;
+            int index = 0;
+            for (File f : listFiles) {
+                if (cashMap.containsKey(Files.getNameWithoutExtension(f.getName()))) {
+                    files[index] = f;
+                    index++;
+                }
             }
+            if (notChanged && storage instanceof JsonStorage) return;
+            if (storage != null) storage.close();
+            RSCash.getInstance().setStorage(new JsonStorage(files, data.getSavePeriod()));
+            RSCash.getInstance().console(ComponentUtil.miniMessage("Storage: JsonFile"));
         }
+        storageList.clear();
+        storageList.addAll(cashMap.keySet());
     }
 
     private void initTranslation(File file) {
@@ -133,7 +144,6 @@ public class ConfigManager {
                 translationMap.put(key, config.getString(key));
             }
         }
-        FileUtil.copyResource(RSCash.getInstance(), "Translations", "Locale_EN.yml");
         FileUtil.copyResource(RSCash.getInstance(), "Translations", "Locale_KR.yml");
     }
 

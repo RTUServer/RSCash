@@ -54,18 +54,18 @@ public class Command extends RSCommand {
                                     else if (arg3.startsWith("-"))
                                         value = playerData - Integer.parseInt(arg3.substring(1));
                                     else value = Integer.parseInt(arg3);
+                                    if (value < 0) {
+                                        sendMessage(ComponentUtil.formatted(getSender(), replacePlayerAndCash(other, cashData, config.getTranslation("prefix") + config.getTranslation("modify.overMin")).replace("{previous}", String.valueOf(playerData)).replace("{current}", String.valueOf(0))));
+                                        cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cash, 0));
+                                    } else if (value > cashData.getMaxCash()) {
+                                        sendMessage(ComponentUtil.formatted(getSender(), replacePlayerAndCash(other, cashData, config.getTranslation("prefix") + config.getTranslation("modify.overMax")).replace("{previous}", String.valueOf(playerData)).replace("{current}", String.valueOf(cashData.getMaxCash()))));
+                                        cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cash, cashData.getMaxCash()));
+                                    } else {
+                                        sendMessage(ComponentUtil.formatted(getSender(), replacePlayerAndCash(other, cashData, config.getTranslation("prefix") + config.getTranslation("modify.success")).replace("{previous}", String.valueOf(playerData)).replace("{current}", String.valueOf(value))));
+                                        cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cash, value));
+                                    }
                                 } else
                                     sendMessage(ComponentUtil.formatted(getSender(), replacePlayer(other, config.getTranslation("prefix") + config.getTranslation("modify.wrongFormat"))));
-                                if (value < 0) {
-                                    sendMessage(ComponentUtil.formatted(getSender(), replacePlayerAndCash(other, cashData, config.getTranslation("prefix") + config.getTranslation("modify.overMin")).replace("{previous}", String.valueOf(playerData)).replace("{current}", String.valueOf(0))));
-                                    cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cash, 0));
-                                } else if (value > cashData.getMaxCash()) {
-                                    sendMessage(ComponentUtil.formatted(getSender(), replacePlayerAndCash(other, cashData, config.getTranslation("prefix") + config.getTranslation("modify.overMax")).replace("{previous}", String.valueOf(playerData)).replace("{current}", String.valueOf(cashData.getMaxCash()))));
-                                    cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cash, cashData.getMaxCash()));
-                                } else {
-                                    sendMessage(ComponentUtil.formatted(getSender(), replacePlayerAndCash(other, cashData, config.getTranslation("prefix") + config.getTranslation("modify.success")).replace("{previous}", String.valueOf(playerData)).replace("{current}", String.valueOf(value))));
-                                    cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cash, value));
-                                }
                             } else {
                                 sendMessage(ComponentUtil.formatted(getSender(), config.getTranslation("prefix") + config.getTranslation("notFound.playerData")));
                             }

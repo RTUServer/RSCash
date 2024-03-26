@@ -19,8 +19,8 @@ modify:
   wrongFormat: "<red>값이 잘못된 형식입니다</red>"
   #{previous}: previous cash
   #{current}: current cash
-  overMin: "<white>{playerName}의 캐시 <gold>{cashName}</gold>가 최대 값인 <green>{current}</green>으로 설정되었습니다. 이전 값: <gray>{previous}</gray></white>"
-  overMax: "<white>{playerName}의 캐시 <gold>{cashName}</gold>가 최대 값인 <green>0</green>으로 설정되었습니다. 이전 값: <gray>{previous}</gray></white>"
+  overMin: "<white>{playerName}의 캐시 <gold>{cashName}</gold>가 최소 값인 <green>0</green>으로 설정되었습니다. 이전 값: <gray>{previous}</gray></white>"
+  overMax: "<white>{playerName}의 캐시 <gold>{cashName}</gold>가 최대 값인 <green>{current}</green>으로 설정되었습니다. 이전 값: <gray>{previous}</gray></white>"
   success: "<white>{playerName}의 캐시 <gold>{cashName}</gold>가 <green>{current}</green>으로 설정되었습니다. 이전 값: <gray>{previous}</gray></white>"
 check:
   #{value}: cash

@@ -6,6 +6,6 @@ import lombok.Data;
 public class SettingConfig {
 
     private boolean enablePlugin = true;
-    private String locale = "EN";
+    private String locale = "KR";
 
 }

@@ -4,5 +4,5 @@ enablePlugin: true
 
 #Message Locale, You can make new Locale File, Locale_KR.yml = KR
 #메세지 언어, 새로운 언어 파일을 만들 수 있습니다, Locale_KR.yml = KR
-locale: "EN"
+locale: "KR"
 

@@ -13,9 +13,9 @@ import java.util.UUID;
 public class CashManager {
 
     private final ConfigManager config = RSCash.getInstance().getConfigManager();
-    private final Storage storage = RSCash.getInstance().getStorage();
 
     public void addPlayer(UUID uuid) {
+        Storage storage = RSCash.getInstance().getStorage();
         for (String cash : config.getCashMap().keySet()) {
             List<JsonObject> result = storage.get(cash, Pair.of("uuid", uuid.toString()));
             if (result.isEmpty()) {
@@ -33,10 +33,12 @@ public class CashManager {
     }
 
     public void setPlayerCash(UUID uuid, PlayerCash playerCash) {
+        Storage storage = RSCash.getInstance().getStorage();
         storage.set(playerCash.getName(), Pair.of("uuid", uuid.toString()), Pair.of("value", playerCash.getCash()));
     }
 
     public Integer getPlayerCash(UUID uuid, String cash) {
+        Storage storage = RSCash.getInstance().getStorage();
         List<JsonObject> result = storage.get(cash, Pair.of("uuid", uuid.toString()));
         if (result.isEmpty() || result.get(0).isJsonNull()) return null;
         JsonElement element = result.get(0).get("value");
