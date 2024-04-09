@@ -30,8 +30,12 @@ public class CashAPI {
         if (!isExistCash(uuid, cash)) return false;
         RSCash instance = RSCash.getInstance();
         int max = instance.getConfigManager().getCashMap().get(cash).getMaxCash();
-        instance.getCashManager().setPlayerCash(uuid, new PlayerCash(cash, Math.min(value, max)));
+        instance.getCashManager().setPlayerCash(uuid, new PlayerCash(cash, Math.min(Math.min(0, value), max)));
         return true;
+    }
+    public static Integer getMaxCash(UUID uuid, String cash) {
+        if (!isExistCash(uuid, cash)) return null;
+        return RSCash.getInstance().getConfigManager().getCashMap().get(cash).getMaxCash();
     }
 
     public static Integer getCash(UUID uuid, String cash) {
@@ -43,7 +47,7 @@ public class CashAPI {
     public static boolean isExistCash(UUID uuid, String cash) {
         if (!RSCash.getInstance().getConfigManager().getCashMap().containsKey(cash)) {
             RSCash.getInstance().console(ComponentUtil.miniMessage("<red>존재하지 않은 재화 데이터에 접근을 시도하였습니다! (" + cash + ")</red>"));
-            RSCash.getInstance().getAdventure().player(uuid).sendMessage(ComponentUtil.miniMessage("<red>존재하지 않은 재화 데이터에 접근을 시도하였습니다! (" + cash + ")</red>"));
+            if (uuid != null) RSCash.getInstance().getAdventure().player(uuid).sendMessage(ComponentUtil.miniMessage("<red>존재하지 않은 재화 데이터에 접근을 시도하였습니다! (" + cash + ")</red>"));
         }
         return true;
     }
