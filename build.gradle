@@ -72,7 +72,6 @@ tasks {
     }
     shadowJar {
         setArchiveClassifier("")
-        relocate("io.papermc.lib", "com.github.ipecter.rtuserver.lib.paperlib")
         doLast {
             copy {
                 from archiveFile.get().asFile into file("$projectDir/builds")
