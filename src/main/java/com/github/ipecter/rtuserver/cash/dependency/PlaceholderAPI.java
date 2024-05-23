@@ -2,8 +2,8 @@ package com.github.ipecter.rtuserver.cash.dependency;
 
 import com.github.ipecter.rtuserver.cash.RSCash;
 import com.github.ipecter.rtuserver.cash.cash.CashManager;
-import com.github.ipecter.rtuserver.lib.plugin.RSPapi;
 import com.github.ipecter.rtuserver.lib.plugin.RSPlugin;
+import com.github.ipecter.rtuserver.lib.plugin.dependency.RSPapi;
 import org.bukkit.OfflinePlayer;
 
 public class PlaceholderAPI extends RSPapi {

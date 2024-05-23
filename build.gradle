@@ -1,12 +1,12 @@
 plugins {
     id 'java'
-    id 'io.freefair.lombok' version '8.3'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'io.freefair.lombok' version '8.6'
+    id "io.github.goooler.shadow" version "8.1.7"
     id 'xyz.jpenilla.run-paper' version '2.1.0'
 }
 
 group = 'com.github.ipecter.rtuserver'
-version = '2.2.0'
+version = '3.0.0'
 
 ConfigurableFileTree libs = fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -63,22 +63,26 @@ dependencies {
     compileOnly libs
 }
 
-shadowJar {
-    setArchiveClassifier("")
-    mkdir("$projectDir/builds")
-    doLast {
-        copy {
-            from archiveFile.get().asFile
-            into file("$projectDir/builds")
+tasks {
+    runServer {
+        dependsOn(shadowJar)
+    }
+    build {
+        dependsOn(shadowJar)
+    }
+    shadowJar {
+        setArchiveClassifier("")
+        relocate("io.papermc.lib", "com.github.ipecter.rtuserver.lib.paperlib")
+        doLast {
+            copy {
+                from archiveFile.get().asFile into file("$projectDir/builds")
+            }
         }
     }
 }
 
 def targetJavaVersion = 17
 
-runServer {
-    minecraftVersion("1.20.1")
-}
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
@@ -89,9 +93,7 @@ java {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release = targetJavaVersion
-    }
+    options.release = targetJavaVersion
 }
 
 processResources {
@@ -100,11 +102,5 @@ processResources {
     filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {
         expand props
-    }
-}
-project.tasks {
-    copy {
-        from libsDirectory
-        into file("$projectDir/builds")
     }
 }

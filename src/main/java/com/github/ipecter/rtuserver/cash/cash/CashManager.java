@@ -1,8 +1,8 @@
 package com.github.ipecter.rtuserver.cash.cash;
 
 import com.github.ipecter.rtuserver.cash.RSCash;
-import com.github.ipecter.rtuserver.cash.managers.ConfigManager;
-import com.github.ipecter.rtuserver.lib.util.data.Storage;
+import com.github.ipecter.rtuserver.cash.config.CashConfig;
+import com.github.ipecter.rtuserver.lib.plugin.storage.Storage;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.lang3.tuple.Pair;
@@ -12,11 +12,11 @@ import java.util.UUID;
 
 public class CashManager {
 
-    private final ConfigManager config = RSCash.getInstance().getConfigManager();
+    private final CashConfig cashConfig = RSCash.getInstance().getCashConfig();
 
     public void addPlayer(UUID uuid) {
         Storage storage = RSCash.getInstance().getStorage();
-        for (String cash : config.getCashMap().keySet()) {
+        for (String cash : cashConfig.getMap().keySet()) {
             List<JsonObject> result = storage.get(cash, Pair.of("uuid", uuid.toString()));
             if (result.isEmpty()) {
                 JsonObject object = new JsonObject();
