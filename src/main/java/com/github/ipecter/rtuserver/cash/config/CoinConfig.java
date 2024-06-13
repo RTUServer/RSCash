@@ -21,7 +21,7 @@ public class CoinConfig extends RSConfiguration {
     private final CashConfig cashConfig = RSCash.getInstance().getCashConfig();
 
     public CoinConfig(RSPlugin plugin) {
-        super(plugin, "Coin.yml", 1);
+        super(plugin, "Coin.yml", null);
         setup(this);
     }
 

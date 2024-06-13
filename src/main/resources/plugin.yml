@@ -1,8 +1,8 @@
-name: RSCash
+name: '${name}'
 version: '${version}'
-main: com.github.ipecter.rtuserver.cash.RSCash
-description: RSCash
-api-version: 1.17
+main: '${main}'
+description: 'RSPlugin - ${name}'
+api-version: '${api_version}'
 depend: [ RSLib ]
 softdepend: [ PlaceholderAPI ]
-authors: [ IPECTER ]
+authors: [ '${author}' ]

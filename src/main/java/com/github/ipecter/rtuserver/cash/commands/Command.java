@@ -8,7 +8,6 @@ import com.github.ipecter.rtuserver.cash.config.CashConfig;
 import com.github.ipecter.rtuserver.cash.config.CoinConfig;
 import com.github.ipecter.rtuserver.lib.plugin.RSPlugin;
 import com.github.ipecter.rtuserver.lib.plugin.command.CommandData;
-import com.github.ipecter.rtuserver.lib.plugin.command.CommandType;
 import com.github.ipecter.rtuserver.lib.plugin.command.RSCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -23,13 +22,13 @@ public class Command extends RSCommand {
     private final CoinConfig coinConfig = RSCash.getInstance().getCoinConfig();
 
     public Command(RSPlugin plugin) {
-        super(plugin, "rscash", CommandType.MAIN);
+        super(plugin, "rscash", true);
     }
 
     @Override
     public boolean command(CommandData data) {
-        String modify = getMessage().get("modify");
-        String check = getMessage().get("check");
+        String modify = getCommand().get("modify");
+        String check = getCommand().get("check");
         String playerName = data.args(1);
         String cashName = data.args(2);
         if (data.equals(0, modify)) {
@@ -56,18 +55,10 @@ public class Command extends RSCommand {
                                     sendAnnounce(replaceModify(other, cashData, playerData, value, getMessage().get("modify.success")));
                                     cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cashName, value));
                                 }
-                            } else
-                                sendMessage(replacePlayer(other, getMessage().get("modify.wrongFormat")));
-                            ;
-                        } else {
-                            sendAnnounce(getMessage().get("notFound.playerData"));
-                        }
-                    } else {
-                        sendAnnounce(getMessage().get("notFound.cashData"));
-                    }
-                } else {
-                    sendAnnounce(getMessage().getCommon("notFound.playerOnline"));
-                }
+                            } else sendMessage(replacePlayer(other, getMessage().get("modify.wrongFormat")));
+                        } else sendAnnounce(getMessage().get("notFound.playerData"));
+                    } else sendAnnounce(getMessage().get("notFound.cashData"));
+                } else sendAnnounce(getMessage().getCommon("notFound.onlinePlayer"));
                 return true;
             } else sendAnnounce(getMessage().getCommon("noPermission"));
         } else if (data.equals(0, check)) {
@@ -77,27 +68,26 @@ public class Command extends RSCommand {
                     String cash = data.args(2);
                     if (cashConfig.getMap().containsKey(cash)) {
                         Integer value = cashManager.getPlayerCash(other.getUniqueId(), cash);
-                        if (value != null) {
+                        if (value != null)
                             sendMessage(replaceCheck(other, cashConfig.getMap().get(cash), value, getMessage().get("check.success")));
-                        } else {
-                            sendAnnounce(getMessage().get("notFound.playerData"));
-                        }
-                    } else {
-                        sendAnnounce(getMessage().get("notFound.cashData"));
-                    }
-                } else {
-                    sendAnnounce(getMessage().getCommon("notFound.playerOnline"));
-                }
+                        else sendAnnounce(getMessage().get("notFound.playerData"));
+                    } else sendAnnounce(getMessage().get("notFound.cashData"));
+                } else sendAnnounce(getMessage().getCommon("notFound.onlinePLayer"));
                 return true;
             } else sendAnnounce(getMessage().getCommon("noPermission"));
         }
         return false;
     }
+    @Override
+    public void reload(CommandData data) {
+        cashConfig.reload();
+        coinConfig.reload();
+    }
 
     @Override
     public void wrongUsage(CommandData data) {
-        sendMessage(getMessage().get("wrongUsage.modify"));
-        sendMessage(getMessage().get("wrongUsage.check"));
+        if (hasPermission("rscash.modify")) sendMessage(getMessage().get("wrongUsage.modify"));
+        if (hasPermission("rscash.check")) sendMessage(getMessage().get("wrongUsage.check"));
     }
 
     private String replacePlayer(Player player, String message) {
@@ -136,22 +126,17 @@ public class Command extends RSCommand {
             return list;
         }
         if (data.length(2)) {
-            String cmd = data.args(0);
-            if (List.of("check", "modify").contains(cmd) && hasPermission("rscash." + cmd)) {
-                return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
-            }
+            List<String> list = Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
+            if (data.equals(0, check) && hasPermission("rscash.check")) return list;
+            if (data.equals(0, modify) && hasPermission("rscash.modify")) return list;
         }
         if (data.length(3)) {
-            String cmd = data.args(0);
-            if (List.of("check", "modify").contains(cmd) && hasPermission("rscash." + cmd)) {
-                return new ArrayList<>(cashConfig.getMap().keySet());
-            }
+            List<String> list = new ArrayList<>(cashConfig.getMap().keySet());
+            if (data.equals(0, check) && hasPermission("rscash.check")) return list;
+            if (data.equals(0, modify) && hasPermission("rscash.modify")) return list;
         }
         if (data.length(4)) {
-            String cmd = data.args(0);
-            if (cmd.equalsIgnoreCase("modify") && hasPermission("rscash.modify")) {
-                return List.of("+1", "1", "-1");
-            }
+            if (data.equals(0, modify) && hasPermission("rscash.modify")) return List.of("+1", "1", "-1");
         }
         return List.of();
     }

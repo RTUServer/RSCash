@@ -1,23 +1,21 @@
-#비어있다면 플러그인의 내장 기본 Prefix를 씁니다
-#MiniMessage 형식: https://webui.advntr.dev/
+# 비어있다면 플러그인의 내장 기본 Prefix를 씁니다
+# MiniMessage 형식: https://webui.advntr.dev/
 wrongUsage:
-  modify: "<white>/rscash modify [플레이어] [캐시] [값]</white>"
-  check: "<white>/rscash check [플레리어] [캐시]</white>"
-
-
-#{playerName}: player name
-#{playerDisplayName}: player displayName
-#{cashName}: cash name
-#{cashDisplayName}: cash displayName
+  modify: "<white> - /rscash 수정 [플레이어] [캐시] [값]</white>"
+  check: "<white> - /rscash 확인 [플레리어] [캐시]</white>"
+# {playerName}: player name
+# {playerDisplayName}: player displayName
+# {cashName}: cash name
+# {cashDisplayName}: cash displayName
 modify:
   wrongFormat: "<red>값이 잘못된 형식입니다</red>"
-  #{previous}: previous cash
-  #{current}: current cash
+  # {previous}: previous cash
+  # {current}: current cash
   overMin: "<white>{playerName}의 캐시 <gold>{cashName}</gold>가 최소 값인 <green>0</green>으로 설정되었습니다. 이전 값: <gray>{previous}</gray></white>"
   overMax: "<white>{playerName}의 캐시 <gold>{cashName}</gold>가 최대 값인 <green>{current}</green>으로 설정되었습니다. 이전 값: <gray>{previous}</gray></white>"
   success: "<white>{playerName}의 캐시 <gold>{cashName}</gold>가 <green>{current}</green>으로 설정되었습니다. 이전 값: <gray>{previous}</gray></white>"
 check:
-  #{value}: cash
+  # {value}: cash
   success: "<white>{playerName}의 캐시 <gold>{cashName}</gold>는 <green>{value}</green>입니다</white>"
 
 notFound:

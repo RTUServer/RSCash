@@ -24,10 +24,6 @@ public class RSCash extends RSPlugin {
     @Getter
     private CashManager cashManager;
 
-    public RSCash() {
-        super(ComponentUtil.miniMessage("<gradient:#f7ff66:#66ff87>【 RSCash 】</gradient>"));
-    }
-
     @Override
     public void enable() {
         instance = this;
