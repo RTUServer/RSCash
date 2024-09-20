@@ -1,9 +1,8 @@
-package com.github.ipecter.rtuserver.cash.config;
+package kr.rtuserver.cash.config;
 
-import com.github.ipecter.rtuserver.cash.cash.Cash;
-import com.github.ipecter.rtuserver.lib.RSLib;
-import com.github.ipecter.rtuserver.lib.plugin.RSPlugin;
-import com.github.ipecter.rtuserver.lib.plugin.config.RSConfiguration;
+import com.github.ipecter.rtuserver.lib.bukkit.api.RSPlugin;
+import com.github.ipecter.rtuserver.lib.bukkit.api.config.RSConfiguration;
+import kr.rtuserver.cash.cash.Cash;
 import lombok.Getter;
 
 import java.util.ArrayList;

@@ -1,10 +1,10 @@
-package com.github.ipecter.rtuserver.cash.cash;
+package kr.rtuserver.cash.cash;
 
-import com.github.ipecter.rtuserver.cash.RSCash;
-import com.github.ipecter.rtuserver.cash.config.CashConfig;
-import com.github.ipecter.rtuserver.lib.plugin.storage.Storage;
+import com.github.ipecter.rtuserver.lib.bukkit.api.storage.Storage;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import kr.rtuserver.cash.RSCash;
+import kr.rtuserver.cash.config.CashConfig;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class CashManager {
 
     public void setPlayerCash(UUID uuid, PlayerCash playerCash) {
         Storage storage = RSCash.getInstance().getStorage();
-        storage.set(playerCash.getName(), Pair.of("uuid", uuid.toString()), Pair.of("value", playerCash.getCash()));
+        storage.set(playerCash.name(), Pair.of("uuid", uuid.toString()), Pair.of("value", playerCash.cash()));
     }
 
     public Integer getPlayerCash(UUID uuid, String cash) {

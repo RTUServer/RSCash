@@ -1,11 +1,11 @@
-package com.github.ipecter.rtuserver.cash.config;
+package kr.rtuserver.cash.config;
 
-import com.github.ipecter.rtuserver.cash.RSCash;
-import com.github.ipecter.rtuserver.cash.cash.Coin;
-import com.github.ipecter.rtuserver.lib.plugin.RSPlugin;
-import com.github.ipecter.rtuserver.lib.plugin.config.RSConfiguration;
-import com.github.ipecter.rtuserver.lib.util.common.ComponentUtil;
-import com.github.ipecter.rtuserver.lib.util.support.ItemUtil;
+import com.github.ipecter.rtuserver.lib.bukkit.api.RSPlugin;
+import com.github.ipecter.rtuserver.lib.bukkit.api.config.RSConfiguration;
+import com.github.ipecter.rtuserver.lib.bukkit.api.utility.compatible.ItemCompat;
+import com.github.ipecter.rtuserver.lib.bukkit.api.utility.format.ComponentFormatter;
+import kr.rtuserver.cash.RSCash;
+import kr.rtuserver.cash.cash.Coin;
 import lombok.Getter;
 import org.simpleyaml.configuration.ConfigurationSection;
 
@@ -30,8 +30,8 @@ public class CoinConfig extends RSConfiguration {
         List<String> list = new ArrayList<>();
         for (String key : getConfig().getKeys(false)) {
             if (!cashConfig.getMap().containsKey(key)) {
-                getPlugin().console(ComponentUtil.miniMessage("<red>Cash: " + key + "is not exist. Check Coin.yml.</red>"));
-                getPlugin().console(ComponentUtil.miniMessage("<red>캐시: " + key + "는 존재하지 않습니다 Coin.yml을 확인해보세요</red>"));
+                getPlugin().console(ComponentFormatter.mini("<red>Cash: " + key + "is not exist. Check Coin.yml.</red>"));
+                getPlugin().console(ComponentFormatter.mini("<red>캐시: " + key + "는 존재하지 않습니다 Coin.yml을 확인해보세요</red>"));
                 continue;
             }
             list.add(key);
@@ -40,9 +40,9 @@ public class CoinConfig extends RSConfiguration {
             ConfigurationSection section = getConfigurationSection(cash);
             if (section == null) continue;
             for (String key : section.getKeys(false)) {
-                if (ItemUtil.fromId(key) == null) {
-                    getPlugin().console(ComponentUtil.miniMessage("<red>Item: " + key + "is not exist. Check Coin.yml.</red>"));
-                    getPlugin().console(ComponentUtil.miniMessage("<red>아이템: " + key + "는 존재하지 않습니다 Coin.yml을 확인해보세요</red>"));
+                if (ItemCompat.from(key) == null) {
+                    getPlugin().console(ComponentFormatter.mini("<red>Item: " + key + "is not exist. Check Coin.yml.</red>"));
+                    getPlugin().console(ComponentFormatter.mini("<red>아이템: " + key + "는 존재하지 않습니다 Coin.yml을 확인해보세요</red>"));
                     continue;
                 }
                 int value = section.getInt(key, 0);

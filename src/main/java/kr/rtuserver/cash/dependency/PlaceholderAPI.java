@@ -1,12 +1,12 @@
-package com.github.ipecter.rtuserver.cash.dependency;
+package kr.rtuserver.cash.dependency;
 
-import com.github.ipecter.rtuserver.cash.RSCash;
-import com.github.ipecter.rtuserver.cash.cash.CashManager;
-import com.github.ipecter.rtuserver.lib.plugin.RSPlugin;
-import com.github.ipecter.rtuserver.lib.plugin.dependency.RSPapi;
+import com.github.ipecter.rtuserver.lib.bukkit.api.RSPlugin;
+import com.github.ipecter.rtuserver.lib.bukkit.api.dependencies.RSPlaceholder;
+import kr.rtuserver.cash.RSCash;
+import kr.rtuserver.cash.cash.CashManager;
 import org.bukkit.OfflinePlayer;
 
-public class PlaceholderAPI extends RSPapi {
+public class PlaceholderAPI extends RSPlaceholder {
 
     private final CashManager cashManager = RSCash.getInstance().getCashManager();
 

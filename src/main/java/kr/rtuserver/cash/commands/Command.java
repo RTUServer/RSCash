@@ -1,14 +1,15 @@
-package com.github.ipecter.rtuserver.cash.commands;
+package kr.rtuserver.cash.commands;
 
-import com.github.ipecter.rtuserver.cash.RSCash;
-import com.github.ipecter.rtuserver.cash.cash.Cash;
-import com.github.ipecter.rtuserver.cash.cash.CashManager;
-import com.github.ipecter.rtuserver.cash.cash.PlayerCash;
-import com.github.ipecter.rtuserver.cash.config.CashConfig;
-import com.github.ipecter.rtuserver.cash.config.CoinConfig;
-import com.github.ipecter.rtuserver.lib.plugin.RSPlugin;
-import com.github.ipecter.rtuserver.lib.plugin.command.CommandData;
-import com.github.ipecter.rtuserver.lib.plugin.command.RSCommand;
+import com.github.ipecter.rtuserver.lib.bukkit.api.RSPlugin;
+import com.github.ipecter.rtuserver.lib.bukkit.api.command.RSCommand;
+import com.github.ipecter.rtuserver.lib.bukkit.api.command.RSCommandData;
+import com.github.ipecter.rtuserver.lib.bukkit.api.utility.player.PlayerChat;
+import kr.rtuserver.cash.RSCash;
+import kr.rtuserver.cash.cash.Cash;
+import kr.rtuserver.cash.cash.CashManager;
+import kr.rtuserver.cash.cash.PlayerCash;
+import kr.rtuserver.cash.config.CashConfig;
+import kr.rtuserver.cash.config.CoinConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -26,7 +27,8 @@ public class Command extends RSCommand {
     }
 
     @Override
-    public boolean command(CommandData data) {
+    public boolean execute(RSCommandData data) {
+        PlayerChat chat = PlayerChat.of(getPlugin());
         String modify = getCommand().get("modify");
         String check = getCommand().get("check");
         String playerName = data.args(1);
@@ -46,21 +48,22 @@ public class Command extends RSCommand {
                                 else if (arg3.startsWith("-")) value = playerData - Integer.parseInt(arg3.substring(1));
                                 else value = Integer.parseInt(arg3);
                                 if (value < 0) {
-                                    sendAnnounce(replaceModify(other, cashData, playerData, 0, getMessage().get("modify.overMin")));
+                                    chat.announce(getAudience(), replaceModify(other, cashData, playerData, 0, getMessage().get("modify.overMin")));
                                     cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cashName, 0));
-                                } else if (value > cashData.getMaxCash()) {
-                                    sendAnnounce(replaceModify(other, cashData, playerData, cashData.getMaxCash(), getMessage().get("modify.overMax")));
-                                    cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cashName, cashData.getMaxCash()));
+                                } else if (value > cashData.maxCash()) {
+                                    chat.announce(getAudience(), replaceModify(other, cashData, playerData, cashData.maxCash(), getMessage().get("modify.overMax")));
+                                    cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cashName, cashData.maxCash()));
                                 } else {
-                                    sendAnnounce(replaceModify(other, cashData, playerData, value, getMessage().get("modify.success")));
+                                    chat.announce(getAudience(), replaceModify(other, cashData, playerData, value, getMessage().get("modify.success")));
                                     cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cashName, value));
                                 }
-                            } else sendMessage(replacePlayer(other, getMessage().get("modify.wrongFormat")));
-                        } else sendAnnounce(getMessage().get("notFound.playerData"));
-                    } else sendAnnounce(getMessage().get("notFound.cashData"));
-                } else sendAnnounce(getMessage().getCommon("notFound.onlinePlayer"));
+                            } else
+                                chat.send(getAudience(), replacePlayer(other, getMessage().get("modify.wrongFormat")));
+                        } else chat.announce(getAudience(), getMessage().get("notFound.playerData"));
+                    } else chat.announce(getAudience(), getMessage().get("notFound.cashData"));
+                } else chat.announce(getAudience(), getMessage().getCommon("notFound.onlinePlayer"));
                 return true;
-            } else sendAnnounce(getMessage().getCommon("noPermission"));
+            } else chat.announce(getAudience(), getMessage().getCommon("noPermission"));
         } else if (data.equals(0, check)) {
             if (hasPermission("rscash.check")) {
                 Player other = Bukkit.getPlayer(playerName);
@@ -69,25 +72,27 @@ public class Command extends RSCommand {
                     if (cashConfig.getMap().containsKey(cash)) {
                         Integer value = cashManager.getPlayerCash(other.getUniqueId(), cash);
                         if (value != null)
-                            sendMessage(replaceCheck(other, cashConfig.getMap().get(cash), value, getMessage().get("check.success")));
-                        else sendAnnounce(getMessage().get("notFound.playerData"));
-                    } else sendAnnounce(getMessage().get("notFound.cashData"));
-                } else sendAnnounce(getMessage().getCommon("notFound.onlinePLayer"));
+                            chat.send(getAudience(), replaceCheck(other, cashConfig.getMap().get(cash), value, getMessage().get("check.success")));
+                        else chat.announce(getAudience(), getMessage().get("notFound.playerData"));
+                    } else chat.announce(getAudience(), getMessage().get("notFound.cashData"));
+                } else chat.announce(getAudience(), getMessage().getCommon("notFound.onlinePLayer"));
                 return true;
-            } else sendAnnounce(getMessage().getCommon("noPermission"));
+            } else chat.announce(getAudience(), getMessage().getCommon("noPermission"));
         }
         return false;
     }
+
     @Override
-    public void reload(CommandData data) {
+    public void reload(RSCommandData data) {
         cashConfig.reload();
         coinConfig.reload();
     }
 
     @Override
-    public void wrongUsage(CommandData data) {
-        if (hasPermission("rscash.modify")) sendMessage(getMessage().get("wrongUsage.modify"));
-        if (hasPermission("rscash.check")) sendMessage(getMessage().get("wrongUsage.check"));
+    public void wrongUsage(RSCommandData data) {
+        PlayerChat chat = PlayerChat.of(getPlugin());
+        if (hasPermission("rscash.modify")) chat.send(getAudience(), getMessage().get("wrongUsage.modify"));
+        if (hasPermission("rscash.check")) chat.send(getAudience(), getMessage().get("wrongUsage.check"));
     }
 
     private String replacePlayer(Player player, String message) {
@@ -100,8 +105,8 @@ public class Command extends RSCommand {
         return message
                 .replace("{playerName}", player.getName())
                 .replace("{playerDisplayName}", player.getDisplayName())
-                .replace("{cashName}", cash.getName())
-                .replace("{cashDisplayName}", cash.getDisplayName())
+                .replace("{cashName}", cash.name())
+                .replace("{cashDisplayName}", cash.displayName())
                 .replace("{previous}", String.valueOf(previous))
                 .replace("{current}", String.valueOf(current));
     }
@@ -110,13 +115,13 @@ public class Command extends RSCommand {
         return message
                 .replace("{playerName}", player.getName())
                 .replace("{playerDisplayName}", player.getDisplayName())
-                .replace("{cashName}", cash.getName())
-                .replace("{cashDisplayName}", cash.getDisplayName())
+                .replace("{cashName}", cash.name())
+                .replace("{cashDisplayName}", cash.displayName())
                 .replace("{value}", String.valueOf(value));
     }
 
     @Override
-    public List<String> tabComplete(CommandData data) {
+    public List<String> tabComplete(RSCommandData data) {
         String modify = getMessage().get("modify");
         String check = getMessage().get("check");
         if (data.length(1)) {

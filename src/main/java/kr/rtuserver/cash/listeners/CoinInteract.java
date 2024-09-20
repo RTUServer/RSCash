@@ -1,14 +1,14 @@
-package com.github.ipecter.rtuserver.cash.listeners;
+package kr.rtuserver.cash.listeners;
 
-import com.github.ipecter.rtuserver.cash.RSCash;
-import com.github.ipecter.rtuserver.cash.cash.CashManager;
-import com.github.ipecter.rtuserver.cash.cash.Coin;
-import com.github.ipecter.rtuserver.cash.cash.PlayerCash;
-import com.github.ipecter.rtuserver.cash.config.CashConfig;
-import com.github.ipecter.rtuserver.cash.config.CoinConfig;
-import com.github.ipecter.rtuserver.lib.plugin.RSPlugin;
-import com.github.ipecter.rtuserver.lib.plugin.listener.RSListener;
-import com.github.ipecter.rtuserver.lib.util.support.ItemUtil;
+import com.github.ipecter.rtuserver.lib.bukkit.api.RSPlugin;
+import com.github.ipecter.rtuserver.lib.bukkit.api.listener.RSListener;
+import com.github.ipecter.rtuserver.lib.bukkit.api.utility.compatible.ItemCompat;
+import kr.rtuserver.cash.RSCash;
+import kr.rtuserver.cash.cash.CashManager;
+import kr.rtuserver.cash.cash.Coin;
+import kr.rtuserver.cash.cash.PlayerCash;
+import kr.rtuserver.cash.config.CashConfig;
+import kr.rtuserver.cash.config.CoinConfig;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -34,25 +34,25 @@ public class CoinInteract extends RSListener {
         ItemStack itemStack = e.getItem();
         if (itemStack == null || itemStack.getType().isEmpty()) return;
         Player player = e.getPlayer();
-        String id = ItemUtil.fromItemStack(itemStack);
+        String id = ItemCompat.to(itemStack);
         if (cashConfig.getMap().containsKey(id)) {
             Coin coin = coinConfig.getMap().get(id);
-            Integer cashAmount = cash.getPlayerCash(player.getUniqueId(), coin.getCash());
+            Integer cashAmount = cash.getPlayerCash(player.getUniqueId(), coin.cash());
             PlayerInventory inventory = player.getInventory();
             ItemStack coinItem = e.getHand() == EquipmentSlot.HAND ? inventory.getItemInMainHand() : inventory.getItemInOffHand();
             int amount = coinItem.getAmount();
             int newCashAmount = cashAmount;
             int itemAmount;
             if (player.isSneaking()) {
-                newCashAmount += (amount * coin.getValue());
+                newCashAmount += (amount * coin.value());
                 itemAmount = 0;
             } else {
-                newCashAmount += coin.getValue();
+                newCashAmount += coin.value();
                 itemAmount = amount - 1;
             }
             itemStack.setAmount(itemAmount);
             if (itemStack.getAmount() == itemAmount)
-                cash.setPlayerCash(player.getUniqueId(), new PlayerCash(coin.getCash(), newCashAmount));
+                cash.setPlayerCash(player.getUniqueId(), new PlayerCash(coin.cash(), newCashAmount));
         }
     }
 }
