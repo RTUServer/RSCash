@@ -1,4 +1,4 @@
-package kr.rtuserver.cash.config;
+package kr.rtuserver.cash.configuration;
 
 import com.github.ipecter.rtuserver.lib.bukkit.api.RSPlugin;
 import com.github.ipecter.rtuserver.lib.bukkit.api.config.RSConfiguration;

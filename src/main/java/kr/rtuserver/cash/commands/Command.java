@@ -8,8 +8,8 @@ import kr.rtuserver.cash.RSCash;
 import kr.rtuserver.cash.cash.Cash;
 import kr.rtuserver.cash.cash.CashManager;
 import kr.rtuserver.cash.cash.PlayerCash;
-import kr.rtuserver.cash.config.CashConfig;
-import kr.rtuserver.cash.config.CoinConfig;
+import kr.rtuserver.cash.configuration.CashConfig;
+import kr.rtuserver.cash.configuration.CoinConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

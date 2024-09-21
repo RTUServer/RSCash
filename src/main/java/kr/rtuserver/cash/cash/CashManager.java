@@ -4,7 +4,7 @@ import com.github.ipecter.rtuserver.lib.bukkit.api.storage.Storage;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import kr.rtuserver.cash.RSCash;
-import kr.rtuserver.cash.config.CashConfig;
+import kr.rtuserver.cash.configuration.CashConfig;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
