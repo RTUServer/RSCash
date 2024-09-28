@@ -1,8 +1,8 @@
 package kr.rtuserver.cash.listeners;
 
-import com.github.ipecter.rtuserver.lib.bukkit.api.RSPlugin;
-import com.github.ipecter.rtuserver.lib.bukkit.api.listener.RSListener;
-import com.github.ipecter.rtuserver.lib.bukkit.api.utility.compatible.ItemCompat;
+import kr.rtuserver.lib.bukkit.api.RSPlugin;
+import kr.rtuserver.lib.bukkit.api.listener.RSListener;
+import kr.rtuserver.lib.bukkit.api.utility.compatible.ItemCompat;
 import kr.rtuserver.cash.RSCash;
 import kr.rtuserver.cash.cash.CashManager;
 import kr.rtuserver.cash.cash.Coin;

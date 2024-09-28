@@ -1,7 +1,7 @@
 package kr.rtuserver.cash.configuration;
 
-import com.github.ipecter.rtuserver.lib.bukkit.api.RSPlugin;
-import com.github.ipecter.rtuserver.lib.bukkit.api.config.RSConfiguration;
+import kr.rtuserver.lib.bukkit.api.RSPlugin;
+import kr.rtuserver.lib.bukkit.api.config.RSConfiguration;
 import kr.rtuserver.cash.cash.Cash;
 import lombok.Getter;
 

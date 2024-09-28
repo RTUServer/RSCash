@@ -1,9 +1,9 @@
 package kr.rtuserver.cash.configuration;
 
-import com.github.ipecter.rtuserver.lib.bukkit.api.RSPlugin;
-import com.github.ipecter.rtuserver.lib.bukkit.api.config.RSConfiguration;
-import com.github.ipecter.rtuserver.lib.bukkit.api.utility.compatible.ItemCompat;
-import com.github.ipecter.rtuserver.lib.bukkit.api.utility.format.ComponentFormatter;
+import kr.rtuserver.lib.bukkit.api.RSPlugin;
+import kr.rtuserver.lib.bukkit.api.config.RSConfiguration;
+import kr.rtuserver.lib.bukkit.api.utility.compatible.ItemCompat;
+import kr.rtuserver.lib.bukkit.api.utility.format.ComponentFormatter;
 import kr.rtuserver.cash.RSCash;
 import kr.rtuserver.cash.cash.Coin;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package kr.rtuserver.cash.cash;
 
-import com.github.ipecter.rtuserver.lib.bukkit.api.storage.Storage;
+import kr.rtuserver.lib.bukkit.api.storage.Storage;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import kr.rtuserver.cash.RSCash;

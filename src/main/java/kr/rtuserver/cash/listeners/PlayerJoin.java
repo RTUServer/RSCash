@@ -1,7 +1,7 @@
 package kr.rtuserver.cash.listeners;
 
-import com.github.ipecter.rtuserver.lib.bukkit.api.RSPlugin;
-import com.github.ipecter.rtuserver.lib.bukkit.api.listener.RSListener;
+import kr.rtuserver.lib.bukkit.api.RSPlugin;
+import kr.rtuserver.lib.bukkit.api.listener.RSListener;
 import kr.rtuserver.cash.RSCash;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;

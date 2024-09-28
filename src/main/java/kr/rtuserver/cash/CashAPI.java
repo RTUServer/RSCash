@@ -1,6 +1,6 @@
 package kr.rtuserver.cash;
 
-import com.github.ipecter.rtuserver.lib.bukkit.api.utility.format.ComponentFormatter;
+import kr.rtuserver.lib.bukkit.api.utility.format.ComponentFormatter;
 import kr.rtuserver.cash.cash.PlayerCash;
 
 import java.util.UUID;

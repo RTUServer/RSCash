@@ -1,7 +1,7 @@
 package kr.rtuserver.cash.dependency;
 
-import com.github.ipecter.rtuserver.lib.bukkit.api.RSPlugin;
-import com.github.ipecter.rtuserver.lib.bukkit.api.dependencies.RSPlaceholder;
+import kr.rtuserver.lib.bukkit.api.RSPlugin;
+import kr.rtuserver.lib.bukkit.api.dependencies.RSPlaceholder;
 import kr.rtuserver.cash.RSCash;
 import kr.rtuserver.cash.cash.CashManager;
 import org.bukkit.OfflinePlayer;

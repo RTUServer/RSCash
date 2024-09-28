@@ -58,7 +58,6 @@ dependencies {
     compileOnly "com.google.guava:guava:33.0.0-jre"
     compileOnly "org.apache.commons:commons-lang3:3.14.0"
     compileOnly 'com.github.Carleslc.Simple-YAML:Simple-Yaml:1.8.4'
-    compileOnly 'com.google.inject:guice:7.0.0'
 
     // 외부 플러그인
     compileOnly "me.clip:placeholderapi:2.11.6"
