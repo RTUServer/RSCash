@@ -75,15 +75,15 @@ dependencies {
     compileOnly libs
 }
 
-tasks {
-    runServer.dependsOn(shadowJar)
-    build.dependsOn(shadowJar)
-    shadowJar {
-        setArchiveClassifier("")
-        doLast {
-            copy {
-                from archiveFile.get().asFile into file("$projectDir/builds")
-            }
+jar {
+    finalizedBy shadowJar
+}
+
+shadowJar {
+    setArchiveClassifier("")
+    doLast {
+        copy {
+            from archiveFile.get().asFile into file("$projectDir/builds")
         }
     }
 }
