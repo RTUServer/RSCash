@@ -5,7 +5,7 @@ plugins {
     id "xyz.jpenilla.run-paper" version "2.3.1"
 }
 
-group = "com.github.rtuserver"
+group = "com.github.ipecter"
 version = project.plugin_version
 
 ConfigurableFileTree libs = fileTree(dir: "libs", include: ["*.jar"])

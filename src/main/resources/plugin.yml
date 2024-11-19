@@ -3,6 +3,6 @@ version: '${version}'
 main: '${main}'
 description: 'RSPlugin - ${name}'
 api-version: '${api_version}'
-depend: [ RSLib ]
+depend: [ RSFramework ]
 softdepend: [ PlaceholderAPI ]
 authors: [ '${author}' ]

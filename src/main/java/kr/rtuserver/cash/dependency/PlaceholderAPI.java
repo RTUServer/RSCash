@@ -1,9 +1,10 @@
 package kr.rtuserver.cash.dependency;
 
-import kr.rtuserver.lib.bukkit.api.RSPlugin;
-import kr.rtuserver.lib.bukkit.api.dependencies.RSPlaceholder;
 import kr.rtuserver.cash.RSCash;
 import kr.rtuserver.cash.cash.CashManager;
+import kr.rtuserver.framework.bukkit.api.RSPlugin;
+import kr.rtuserver.framework.bukkit.api.dependencies.RSPlaceholder;
+import kr.rtuserver.framework.bukkit.api.utility.dependencies.PAPI;
 import org.bukkit.OfflinePlayer;
 
 public class PlaceholderAPI extends RSPlaceholder {

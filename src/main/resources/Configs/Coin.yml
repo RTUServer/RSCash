@@ -1,4 +1,6 @@
 Example:
-  itemsadder:cash:coin_1: 1
+  mmoitem:cash:coin_1: 1
+  custom:bread:10: 10
+  minecraft:light: 100
   itemsadder:cash:coin_1000: 1000
-  oraxen:cash:coin_10000: 10000
+  oraxen:coin_10000: 10000

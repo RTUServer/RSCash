@@ -1,11 +1,11 @@
 package kr.rtuserver.cash.configuration;
 
-import kr.rtuserver.lib.bukkit.api.RSPlugin;
-import kr.rtuserver.lib.bukkit.api.config.RSConfiguration;
-import kr.rtuserver.lib.bukkit.api.utility.compatible.ItemCompat;
-import kr.rtuserver.lib.bukkit.api.utility.format.ComponentFormatter;
 import kr.rtuserver.cash.RSCash;
 import kr.rtuserver.cash.cash.Coin;
+import kr.rtuserver.framework.bukkit.api.RSPlugin;
+import kr.rtuserver.framework.bukkit.api.config.RSConfiguration;
+import kr.rtuserver.framework.bukkit.api.utility.compatible.ItemCompat;
+import kr.rtuserver.framework.bukkit.api.utility.format.ComponentFormatter;
 import lombok.Getter;
 import org.simpleyaml.configuration.ConfigurationSection;
 

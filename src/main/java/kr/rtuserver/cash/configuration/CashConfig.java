@@ -1,8 +1,8 @@
 package kr.rtuserver.cash.configuration;
 
-import kr.rtuserver.lib.bukkit.api.RSPlugin;
-import kr.rtuserver.lib.bukkit.api.config.RSConfiguration;
 import kr.rtuserver.cash.cash.Cash;
+import kr.rtuserver.framework.bukkit.api.RSPlugin;
+import kr.rtuserver.framework.bukkit.api.config.RSConfiguration;
 import lombok.Getter;
 
 import java.util.ArrayList;

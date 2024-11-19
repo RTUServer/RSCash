@@ -1,15 +1,15 @@
 package kr.rtuserver.cash.commands;
 
-import kr.rtuserver.lib.bukkit.api.RSPlugin;
-import kr.rtuserver.lib.bukkit.api.command.RSCommand;
-import kr.rtuserver.lib.bukkit.api.command.RSCommandData;
-import kr.rtuserver.lib.bukkit.api.utility.player.PlayerChat;
 import kr.rtuserver.cash.RSCash;
 import kr.rtuserver.cash.cash.Cash;
 import kr.rtuserver.cash.cash.CashManager;
 import kr.rtuserver.cash.cash.PlayerCash;
 import kr.rtuserver.cash.configuration.CashConfig;
 import kr.rtuserver.cash.configuration.CoinConfig;
+import kr.rtuserver.framework.bukkit.api.RSPlugin;
+import kr.rtuserver.framework.bukkit.api.command.RSCommand;
+import kr.rtuserver.framework.bukkit.api.command.RSCommandData;
+import kr.rtuserver.framework.bukkit.api.utility.player.PlayerChat;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

@@ -1,7 +1,7 @@
 package kr.rtuserver.cash;
 
-import kr.rtuserver.lib.bukkit.api.utility.format.ComponentFormatter;
 import kr.rtuserver.cash.cash.PlayerCash;
+import kr.rtuserver.framework.bukkit.api.utility.format.ComponentFormatter;
 
 import java.util.UUID;
 
