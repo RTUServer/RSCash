@@ -58,7 +58,7 @@ public class Command extends RSCommand {
                                     cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cashName, value));
                                 }
                             } else
-                                chat.send(getAudience(), replacePlayer(other, getMessage().get("modify.wrongFormat")));
+                                chat.announce(getAudience(), replacePlayer(other, getMessage().get("modify.wrongFormat")));
                         } else chat.announce(getAudience(), getMessage().get("notFound.playerData"));
                     } else chat.announce(getAudience(), getMessage().get("notFound.cashData"));
                 } else chat.announce(getAudience(), getMessage().getCommon("notFound.onlinePlayer"));
@@ -72,7 +72,7 @@ public class Command extends RSCommand {
                     if (cashConfig.getMap().containsKey(cash)) {
                         Integer value = cashManager.getPlayerCash(other.getUniqueId(), cash);
                         if (value != null)
-                            chat.send(getAudience(), replaceCheck(other, cashConfig.getMap().get(cash), value, getMessage().get("check.success")));
+                            chat.announce(getAudience(), replaceCheck(other, cashConfig.getMap().get(cash), value, getMessage().get("check.success")));
                         else chat.announce(getAudience(), getMessage().get("notFound.playerData"));
                     } else chat.announce(getAudience(), getMessage().get("notFound.cashData"));
                 } else chat.announce(getAudience(), getMessage().getCommon("notFound.onlinePLayer"));
@@ -122,8 +122,8 @@ public class Command extends RSCommand {
 
     @Override
     public List<String> tabComplete(RSCommandData data) {
-        String modify = getMessage().get("modify");
-        String check = getMessage().get("check");
+        String modify = getCommand().get("modify");
+        String check = getCommand().get("check");
         if (data.length(1)) {
             List<String> list = new ArrayList<>();
             if (hasPermission("rscash.modify")) list.add(modify);

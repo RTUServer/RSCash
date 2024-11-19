@@ -12,7 +12,7 @@ import lombok.Getter;
 import org.bukkit.permissions.PermissionDefault;
 
 public class RSCash extends RSPlugin {
-
+    //TODO: Integer to Long
     @Getter
     private static RSCash instance;
     @Getter
@@ -26,8 +26,8 @@ public class RSCash extends RSPlugin {
     public void enable() {
         instance = this;
 
-        registerPermission(getName() + ".modify", PermissionDefault.OP);
-        registerPermission(getName() + ".check", PermissionDefault.OP);
+        registerPermission("rscash.modify", PermissionDefault.OP);
+        registerPermission("rscash.check", PermissionDefault.OP);
 
         cashConfig = new CashConfig(this);
         coinConfig = new CoinConfig(this);
