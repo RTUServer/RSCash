@@ -6,7 +6,6 @@ import kr.rtuserver.cash.cash.CashManager;
 import kr.rtuserver.cash.cash.PlayerCash;
 import kr.rtuserver.cash.configuration.CashConfig;
 import kr.rtuserver.cash.configuration.CoinConfig;
-import kr.rtuserver.framework.bukkit.api.RSPlugin;
 import kr.rtuserver.framework.bukkit.api.command.RSCommand;
 import kr.rtuserver.framework.bukkit.api.command.RSCommandData;
 import kr.rtuserver.framework.bukkit.api.utility.player.PlayerChat;
@@ -18,12 +17,15 @@ import java.util.List;
 
 public class Command extends RSCommand {
 
-    private final CashManager cashManager = RSCash.getInstance().getCashManager();
-    private final CashConfig cashConfig = RSCash.getInstance().getCashConfig();
-    private final CoinConfig coinConfig = RSCash.getInstance().getCoinConfig();
+    private final CashManager cashManager;
+    private final CashConfig cashConfig;
+    private final CoinConfig coinConfig;
 
-    public Command(RSPlugin plugin) {
+    public Command(RSCash plugin) {
         super(plugin, "rscash", true);
+        this.cashManager = plugin.getCashManager();
+        this.cashConfig = plugin.getCashConfig();
+        this.coinConfig = plugin.getCoinConfig();
     }
 
     @Override
@@ -39,26 +41,49 @@ public class Command extends RSCommand {
                 if (other != null) {
                     if (cashConfig.getMap().containsKey(cashName)) {
                         Cash cashData = cashConfig.getMap().get(cashName);
-                        Integer playerData = cashManager.getPlayerCash(other.getUniqueId(), cashName);
+                        Long playerData = cashManager.getPlayerCash(other.getUniqueId(), cashName);
                         if (playerData != null) {
-                            int value = playerData;
+                            long value;
                             String arg3 = data.args(3);
                             if (arg3.matches("^([+\\-]?\\d+|[0-9]+)$")) {
-                                if (arg3.startsWith("+")) value = playerData + Integer.parseInt(arg3.substring(1));
-                                else if (arg3.startsWith("-")) value = playerData - Integer.parseInt(arg3.substring(1));
-                                else value = Integer.parseInt(arg3);
-                                if (value < 0) {
-                                    chat.announce(getAudience(), replaceModify(other, cashData, playerData, 0, getMessage().get("modify.overMin")));
-                                    cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cashName, 0));
-                                } else if (value > cashData.maxCash()) {
-                                    chat.announce(getAudience(), replaceModify(other, cashData, playerData, cashData.maxCash(), getMessage().get("modify.overMax")));
-                                    cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cashName, cashData.maxCash()));
+
+                                if (arg3.startsWith("+")) {
+                                    try {
+                                        value = Long.parseLong(arg3.substring(1));
+                                        if ((playerData > Long.MAX_VALUE - value) || (playerData + value > cashData.limitMax())) {
+                                            chat.announce(getAudience(), replaceModify(other, cashData, playerData, cashData.limitMax(), getMessage().get("modify.overMax")));
+                                            cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cashName, cashData.limitMax()));
+                                        } else {
+                                            chat.announce(getAudience(), replaceModify(other, cashData, playerData, playerData + value, getMessage().get("modify.success")));
+                                            cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cashName, playerData + value));
+                                        }
+                                    } catch (NumberFormatException e) {
+                                        chat.announce(getAudience(), replacePlayer(other, getMessage().get("modify.wrongFormat")));
+                                    }
+                                } else if (arg3.startsWith("-")) {
+                                    try {
+                                        value = Long.parseLong(arg3.substring(1));
+                                        if ((playerData < Long.MIN_VALUE + value) || (playerData - value < cashData.limitMin())) {
+                                            chat.announce(getAudience(), replaceModify(other, cashData, playerData, cashData.limitMin(), getMessage().get("modify.overMin")));
+                                            cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cashName, cashData.limitMin()));
+                                        } else {
+                                            chat.announce(getAudience(), replaceModify(other, cashData, playerData, playerData - value, getMessage().get("modify.success")));
+                                            cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cashName, playerData - value));
+                                        }
+                                    } catch (NumberFormatException e) {
+                                        chat.announce(getAudience(), replacePlayer(other, getMessage().get("modify.wrongFormat")));
+                                    }
                                 } else {
-                                    chat.announce(getAudience(), replaceModify(other, cashData, playerData, value, getMessage().get("modify.success")));
-                                    cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cashName, value));
+                                    try {
+                                        value = Long.parseLong(arg3);
+                                        chat.announce(getAudience(), replaceModify(other, cashData, playerData, value, getMessage().get("modify.success")));
+                                        cashManager.setPlayerCash(other.getUniqueId(), new PlayerCash(cashName, value));
+                                    } catch (NumberFormatException e) {
+                                        chat.announce(getAudience(), replacePlayer(other, getMessage().get("modify.wrongFormat")));
+                                    }
                                 }
-                            } else
-                                chat.announce(getAudience(), replacePlayer(other, getMessage().get("modify.wrongFormat")));
+
+                            } else chat.announce(getAudience(), replacePlayer(other, getMessage().get("modify.wrongFormat")));
                         } else chat.announce(getAudience(), getMessage().get("notFound.playerData"));
                     } else chat.announce(getAudience(), getMessage().get("notFound.cashData"));
                 } else chat.announce(getAudience(), getMessage().getCommon("notFound.onlinePlayer"));
@@ -70,7 +95,7 @@ public class Command extends RSCommand {
                 if (other != null) {
                     String cash = data.args(2);
                     if (cashConfig.getMap().containsKey(cash)) {
-                        Integer value = cashManager.getPlayerCash(other.getUniqueId(), cash);
+                        Long value = cashManager.getPlayerCash(other.getUniqueId(), cash);
                         if (value != null)
                             chat.announce(getAudience(), replaceCheck(other, cashConfig.getMap().get(cash), value, getMessage().get("check.success")));
                         else chat.announce(getAudience(), getMessage().get("notFound.playerData"));
@@ -101,7 +126,7 @@ public class Command extends RSCommand {
                 .replace("{playerDisplayName}", player.getDisplayName());
     }
 
-    private String replaceModify(Player player, Cash cash, int previous, int current, String message) {
+    private String replaceModify(Player player, Cash cash, long previous, long current, String message) {
         return message
                 .replace("{playerName}", player.getName())
                 .replace("{playerDisplayName}", player.getDisplayName())
@@ -111,7 +136,7 @@ public class Command extends RSCommand {
                 .replace("{current}", String.valueOf(current));
     }
 
-    private String replaceCheck(Player player, Cash cash, int value, String message) {
+    private String replaceCheck(Player player, Cash cash, long value, String message) {
         return message
                 .replace("{playerName}", player.getName())
                 .replace("{playerDisplayName}", player.getDisplayName())

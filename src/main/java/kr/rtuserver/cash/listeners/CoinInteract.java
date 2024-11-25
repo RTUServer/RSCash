@@ -37,11 +37,11 @@ public class CoinInteract extends RSListener {
         String id = ItemCompat.to(itemStack);
         if (cashConfig.getMap().containsKey(id)) {
             Coin coin = coinConfig.getMap().get(id);
-            Integer cashAmount = cash.getPlayerCash(player.getUniqueId(), coin.cash());
+            Long cashAmount = cash.getPlayerCash(player.getUniqueId(), coin.cash());
             PlayerInventory inventory = player.getInventory();
             ItemStack coinItem = e.getHand() == EquipmentSlot.HAND ? inventory.getItemInMainHand() : inventory.getItemInOffHand();
             int amount = coinItem.getAmount();
-            int newCashAmount = cashAmount;
+            long newCashAmount = cashAmount;
             int itemAmount;
             if (player.isSneaking()) {
                 newCashAmount += (amount * coin.value());

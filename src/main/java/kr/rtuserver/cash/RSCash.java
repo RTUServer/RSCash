@@ -1,5 +1,6 @@
 package kr.rtuserver.cash;
 
+import ch.njol.skript.SkriptAddon;
 import kr.rtuserver.cash.cash.CashManager;
 import kr.rtuserver.cash.commands.Command;
 import kr.rtuserver.cash.configuration.CashConfig;
@@ -7,6 +8,7 @@ import kr.rtuserver.cash.configuration.CoinConfig;
 import kr.rtuserver.cash.dependency.PlaceholderAPI;
 import kr.rtuserver.cash.listeners.CoinInteract;
 import kr.rtuserver.cash.listeners.PlayerJoin;
+import kr.rtuserver.cash.skript.ExprCash;
 import kr.rtuserver.framework.bukkit.api.RSPlugin;
 import lombok.Getter;
 import org.bukkit.permissions.PermissionDefault;
@@ -21,6 +23,8 @@ public class RSCash extends RSPlugin {
     private CoinConfig coinConfig;
     @Getter
     private CashManager cashManager;
+
+    private SkriptAddon skriptAddon;
 
     @Override
     public void enable() {
@@ -37,6 +41,10 @@ public class RSCash extends RSPlugin {
         registerEvent(new PlayerJoin(this));
         registerEvent(new CoinInteract(this));
         registerCommand(new Command(this));
+
+        if (getFramework().isEnabledDependency("Skript")) {
+            ExprCash.register();
+        }
 
         if (getFramework().isEnabledDependency("PlaceholderAPI")) new PlaceholderAPI(this).register();
     }

@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import kr.rtuserver.cash.RSCash;
 import kr.rtuserver.cash.configuration.CashConfig;
 import kr.rtuserver.framework.bukkit.api.storage.Storage;
+import kr.rtuserver.framework.bukkit.api.utility.platform.JSON;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
@@ -19,10 +20,7 @@ public class CashManager {
         for (String cash : cashConfig.getMap().keySet()) {
             List<JsonObject> result = storage.get(cash, Pair.of("uuid", uuid.toString()));
             if (result.isEmpty()) {
-                JsonObject object = new JsonObject();
-                object.addProperty("uuid", uuid.toString());
-                object.addProperty("value", 0);
-                storage.add(cash, object);
+                storage.add(cash, JSON.of("uuid", uuid.toString()).append("value", 0L).get());
             } else {
                 JsonElement element = result.get(0).get("value");
                 if (element == null || element.isJsonNull()) {
@@ -37,14 +35,12 @@ public class CashManager {
         storage.set(playerCash.name(), Pair.of("uuid", uuid.toString()), Pair.of("value", playerCash.cash()));
     }
 
-    public Integer getPlayerCash(UUID uuid, String cash) {
+    public Long getPlayerCash(UUID uuid, String cash) {
         Storage storage = RSCash.getInstance().getStorage();
         List<JsonObject> result = storage.get(cash, Pair.of("uuid", uuid.toString()));
         if (result.isEmpty() || result.get(0).isJsonNull()) return null;
         JsonElement element = result.get(0).get("value");
-        if (element != null && !element.isJsonNull()) {
-            return element.getAsInt();
-        }
+        if (element != null && !element.isJsonNull()) return element.getAsLong();
         return null;
     }
 }

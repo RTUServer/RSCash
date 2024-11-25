@@ -4,7 +4,6 @@ import kr.rtuserver.cash.RSCash;
 import kr.rtuserver.cash.cash.CashManager;
 import kr.rtuserver.framework.bukkit.api.RSPlugin;
 import kr.rtuserver.framework.bukkit.api.dependencies.RSPlaceholder;
-import kr.rtuserver.framework.bukkit.api.utility.dependencies.PAPI;
 import org.bukkit.OfflinePlayer;
 
 public class PlaceholderAPI extends RSPlaceholder {
@@ -18,7 +17,7 @@ public class PlaceholderAPI extends RSPlaceholder {
     @Override
     public String request(OfflinePlayer offlinePlayer, String[] params) {
         if (params[0] != null) {
-            Integer value = cashManager.getPlayerCash(offlinePlayer.getUniqueId(), params[0]);
+            Long value = cashManager.getPlayerCash(offlinePlayer.getUniqueId(), params[0]);
             if (value != null) {
                 return String.valueOf(value);
             } else return "ERROR: Not found player data";

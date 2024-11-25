@@ -42,6 +42,9 @@ repositories {
     maven {
         url = "https://papermc.io/repo/repository/maven-public/"
     }
+    maven {
+        url = "https://repo.skriptlang.org/releases"
+    }
 }
 
 
@@ -66,6 +69,7 @@ dependencies {
     compileOnly "net.luckperms:api:5.4"
     compileOnly "io.th0rgal:oraxen:1.168.0"
     compileOnly "com.github.LoneDev6:API-ItemsAdder:3.6.2-beta-r3-b"
+    compileOnly 'com.github.SkriptLang:Skript:2.8.5'
 
     // Gradle 플러그인
     compileOnly "org.projectlombok:lombok:1.18.32"
