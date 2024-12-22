@@ -83,7 +83,8 @@ public class Command extends RSCommand<RSCash> {
                                     }
                                 }
 
-                            } else chat.announce(getAudience(), replacePlayer(other, getMessage().get("modify.wrongFormat")));
+                            } else
+                                chat.announce(getAudience(), replacePlayer(other, getMessage().get("modify.wrongFormat")));
                         } else chat.announce(getAudience(), getMessage().get("notFound.playerData"));
                     } else chat.announce(getAudience(), getMessage().get("notFound.cashData"));
                 } else chat.announce(getAudience(), getCommon().getMessage("notFound.onlinePlayer"));

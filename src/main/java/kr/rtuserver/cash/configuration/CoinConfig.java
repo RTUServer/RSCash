@@ -5,7 +5,6 @@ import kr.rtuserver.cash.cash.Coin;
 import kr.rtuserver.framework.bukkit.api.config.RSConfiguration;
 import kr.rtuserver.framework.bukkit.api.utility.compatible.ItemCompat;
 import kr.rtuserver.framework.bukkit.api.utility.format.ComponentFormatter;
-import kr.rtuserver.framework.bukkit.api.RSPlugin;
 import lombok.Getter;
 import org.simpleyaml.configuration.ConfigurationSection;
 

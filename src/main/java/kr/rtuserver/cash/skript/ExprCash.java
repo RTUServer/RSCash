@@ -2,7 +2,6 @@ package kr.rtuserver.cash.skript;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.classes.Changer;
-import ch.njol.skript.doc.*;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -15,12 +14,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Objects;
 
 public class ExprCash extends SimpleExpression<Long> {
 
     private Expression<String> cashType;
     private Expression<Player> player;
+
+    public static void register() {
+        Skript.registerExpression(ExprCash.class, Long.class, ExpressionType.PROPERTY,
+                "%player%'s cash [named] %string%");
+    }
 
     @Override
     public @NotNull Class<? extends Long> getReturnType() {
@@ -59,9 +62,8 @@ public class ExprCash extends SimpleExpression<Long> {
         return allowed.contains(mode) ? new Class[]{Long.class} : null;
     }
 
-
     @Override
-    public void change(@NotNull Event e, Object [] delta, Changer.ChangeMode mode) {
+    public void change(@NotNull Event e, Object[] delta, Changer.ChangeMode mode) {
         Player p = player.getSingle(e);
         String type = cashType.getSingle(e);
         if (p == null || type == null) return;
@@ -72,10 +74,5 @@ public class ExprCash extends SimpleExpression<Long> {
                 case REMOVE -> CashAPI.subtract(p.getUniqueId(), type, amount);
             }
         }
-    }
-
-    public static void register() {
-        Skript.registerExpression(ExprCash.class, Long.class, ExpressionType.PROPERTY,
-                "%player%'s cash [named] %string%");
     }
 }

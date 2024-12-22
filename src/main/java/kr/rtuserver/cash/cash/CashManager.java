@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import kr.rtuserver.cash.RSCash;
 import kr.rtuserver.cash.configuration.CashConfig;
 import kr.rtuserver.framework.bukkit.api.storage.Storage;
-import kr.rtuserver.framework.bukkit.api.storage.Storage;
 import kr.rtuserver.framework.bukkit.api.utility.platform.JSON;
 import org.apache.commons.lang3.tuple.Pair;
 
