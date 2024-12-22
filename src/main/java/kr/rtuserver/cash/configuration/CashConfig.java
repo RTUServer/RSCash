@@ -24,8 +24,9 @@ public class CashConfig extends RSConfiguration<RSCash> {
         for (String key : getConfig().getKeys(false)) {
             String displayName = getString(key + ".displayName", "");
             String description = getString(key + ".description", "");
-            int maxCash = getInt(key + ".maxCash", 100000000);
-            Cash cash = new Cash(key, displayName, description, maxCash);
+            long limitMax = getLong(key + ".limit.max", Long.MAX_VALUE);
+            long limitMin = getLong(key + ".limit.min", Long.MIN_VALUE);
+            Cash cash = new Cash(key, displayName, description, limitMax, limitMin);
             map.put(key, cash);
         }
         getPlugin().getConfigurations().initStorage(new ArrayList<>(map.keySet()));

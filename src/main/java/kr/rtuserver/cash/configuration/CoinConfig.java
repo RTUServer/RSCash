@@ -5,6 +5,7 @@ import kr.rtuserver.cash.cash.Coin;
 import kr.rtuserver.framework.bukkit.api.config.RSConfiguration;
 import kr.rtuserver.framework.bukkit.api.utility.compatible.ItemCompat;
 import kr.rtuserver.framework.bukkit.api.utility.format.ComponentFormatter;
+import kr.rtuserver.framework.bukkit.api.RSPlugin;
 import lombok.Getter;
 import org.simpleyaml.configuration.ConfigurationSection;
 
@@ -30,7 +31,7 @@ public class CoinConfig extends RSConfiguration<RSCash> {
         List<String> list = new ArrayList<>();
         for (String key : getConfig().getKeys(false)) {
             if (!cashConfig.getMap().containsKey(key)) {
-                getPlugin().console(ComponentFormatter.mini("<red>Cash: " + key + "is not exist. Check Coin.yml.</red>"));
+                getPlugin().console(ComponentFormatter.mini("<red>Cash: " + key + " is not exist. Check Coin.yml.</red>"));
                 getPlugin().console(ComponentFormatter.mini("<red>캐시: " + key + "는 존재하지 않습니다 Coin.yml을 확인해보세요</red>"));
                 continue;
             }

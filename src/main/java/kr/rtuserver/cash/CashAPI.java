@@ -9,47 +9,77 @@ public class CashAPI {
 
     private static final RSCash instance = RSCash.getInstance();
 
-    public static boolean addCash(UUID uuid, String cash, int value) {
-        if (!isExistCash(uuid, cash)) return false;
-        int max = instance.getCashConfig().getMap().get(cash).maxCash();
-        Integer playerCash = getCash(uuid, cash);
+    public static boolean add(UUID uuid, String cash, long value) {
+        if (!exist(cash)) return false;
+        if (value == 0) return true;
+        if (value < 0) return subtract(uuid, cash, -value);
+        long max = instance.getCashConfig().getMap().get(cash).limitMax();
+        long min = instance.getCashConfig().getMap().get(cash).limitMin();
+        Long playerCash = get(uuid, cash);
         if (playerCash == null) return false;
-        instance.getCashManager().setPlayerCash(uuid, new PlayerCash(cash, Math.min(playerCash + value, max)));
+        long result = Math.max(Math.min(addSafely(playerCash, value), max), min);
+        instance.getCashManager().setPlayerCash(uuid, new PlayerCash(cash, result));
         return true;
     }
 
-    public static boolean removeCash(UUID uuid, String cash, int value) {
-        if (!isExistCash(uuid, cash)) return false;
-        Integer playerCash = getCash(uuid, cash);
+    public static boolean subtract(UUID uuid, String cash, long value) {
+        if (!exist(cash)) return false;
+        if (value == 0) return true;
+        if (value < 0) return add(uuid, cash, -value);
+        long max = instance.getCashConfig().getMap().get(cash).limitMax();
+        long min = instance.getCashConfig().getMap().get(cash).limitMin();
+        Long playerCash = get(uuid, cash);
         if (playerCash == null) return false;
-        instance.getCashManager().setPlayerCash(uuid, new PlayerCash(cash, Math.max(playerCash - value, 0)));
+        long result = Math.min(Math.max(subtractSafely(playerCash, value), min), max);
+        instance.getCashManager().setPlayerCash(uuid, new PlayerCash(cash, result));
         return true;
     }
 
-    public static boolean setCash(UUID uuid, String cash, int value) {
-        if (!isExistCash(uuid, cash)) return false;
-        int max = instance.getCashConfig().getMap().get(cash).maxCash();
-        instance.getCashManager().setPlayerCash(uuid, new PlayerCash(cash, Math.min(Math.min(0, value), max)));
+    public static boolean set(UUID uuid, String cash, long value) {
+        if (!exist(cash)) return false;
+        long max = instance.getCashConfig().getMap().get(cash).limitMax();
+        long min = instance.getCashConfig().getMap().get(cash).limitMin();
+        instance.getCashManager().setPlayerCash(uuid, new PlayerCash(cash, Math.max(Math.min(value, max), min)));
         return true;
     }
 
-    public static Integer getMaxCash(UUID uuid, String cash) {
-        if (!isExistCash(uuid, cash)) return null;
-        return instance.getCashConfig().getMap().get(cash).maxCash();
+    public static Long max(String cash) {
+        if (!exist(cash)) return null;
+        return instance.getCashConfig().getMap().get(cash).limitMax();
     }
 
-    public static Integer getCash(UUID uuid, String cash) {
-        if (!isExistCash(uuid, cash)) return null;
+    public static Long min(String cash) {
+        if (!exist(cash)) return null;
+        return instance.getCashConfig().getMap().get(cash).limitMin();
+    }
+
+    public static Long get(UUID uuid, String cash) {
+        if (!exist(cash)) return null;
         return instance.getCashManager().getPlayerCash(uuid, cash);
     }
 
 
-    public static boolean isExistCash(UUID uuid, String cash) {
-        if (instance.getCashConfig().getMap().containsKey(cash)) return true;
-        instance.console(ComponentFormatter.mini("<red>존재하지 않은 재화 데이터에 접근을 시도하였습니다! (" + cash + ")</red>"));
-        if (uuid != null)
-            instance.getAdventure().player(uuid).sendMessage(ComponentFormatter.mini("<red>존재하지 않은 재화 데이터에 접근을 시도하였습니다! (" + cash + ")</red>"));
-        return false;
+    public static boolean exist(String cash) {
+        if (cash == null || cash.isEmpty()) return false;
+        return instance.getCashConfig().getMap().containsKey(cash);
+    }
+
+    private static long addSafely(long a, long b) {
+        if (b > 0 && a > Long.MAX_VALUE - b) {
+            return Long.MAX_VALUE;
+        } else if (b < 0 && a < Long.MIN_VALUE - b) {
+            return Long.MIN_VALUE;
+        }
+        return a + b;
+    }
+
+    private static long subtractSafely(long a, long b) {
+        if (b > 0 && a < Long.MIN_VALUE + b) {
+            return Long.MIN_VALUE;
+        } else if (b < 0 && a > Long.MAX_VALUE + b) {
+            return Long.MAX_VALUE;
+        }
+        return a - b;
     }
 
 }

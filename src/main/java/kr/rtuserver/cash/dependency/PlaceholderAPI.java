@@ -17,7 +17,7 @@ public class PlaceholderAPI extends RSPlaceholder<RSCash> {
     @Override
     public String request(OfflinePlayer offlinePlayer, String[] params) {
         if (params[0] != null) {
-            Integer value = cashManager.getPlayerCash(offlinePlayer.getUniqueId(), params[0]);
+            Long value = cashManager.getPlayerCash(offlinePlayer.getUniqueId(), params[0]);
             if (value != null) {
                 return String.valueOf(value);
             } else return "ERROR: Not found player data";

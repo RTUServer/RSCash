@@ -8,6 +8,7 @@ import kr.rtuserver.cash.configuration.CashConfig;
 import kr.rtuserver.cash.configuration.CoinConfig;
 import kr.rtuserver.framework.bukkit.api.listener.RSListener;
 import kr.rtuserver.framework.bukkit.api.utility.compatible.ItemCompat;
+import kr.rtuserver.framework.bukkit.api.RSPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -39,11 +40,11 @@ public class CoinInteract extends RSListener<RSCash> {
         String id = ItemCompat.to(itemStack);
         if (cashConfig.getMap().containsKey(id)) {
             Coin coin = coinConfig.getMap().get(id);
-            Integer cashAmount = cash.getPlayerCash(player.getUniqueId(), coin.cash());
+            Long cashAmount = cash.getPlayerCash(player.getUniqueId(), coin.cash());
             PlayerInventory inventory = player.getInventory();
             ItemStack coinItem = e.getHand() == EquipmentSlot.HAND ? inventory.getItemInMainHand() : inventory.getItemInOffHand();
             int amount = coinItem.getAmount();
-            int newCashAmount = cashAmount;
+            long newCashAmount = cashAmount;
             int itemAmount;
             if (player.isSneaking()) {
                 newCashAmount += (amount * coin.value());
