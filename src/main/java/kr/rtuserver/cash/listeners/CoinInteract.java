@@ -1,14 +1,13 @@
 package kr.rtuserver.cash.listeners;
 
-import kr.rtuserver.lib.bukkit.api.RSPlugin;
-import kr.rtuserver.lib.bukkit.api.listener.RSListener;
-import kr.rtuserver.lib.bukkit.api.utility.compatible.ItemCompat;
 import kr.rtuserver.cash.RSCash;
 import kr.rtuserver.cash.cash.CashManager;
 import kr.rtuserver.cash.cash.Coin;
 import kr.rtuserver.cash.cash.PlayerCash;
 import kr.rtuserver.cash.configuration.CashConfig;
 import kr.rtuserver.cash.configuration.CoinConfig;
+import kr.rtuserver.framework.bukkit.api.listener.RSListener;
+import kr.rtuserver.framework.bukkit.api.utility.compatible.ItemCompat;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -17,14 +16,17 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-public class CoinInteract extends RSListener {
+public class CoinInteract extends RSListener<RSCash> {
 
-    private final CashConfig cashConfig = RSCash.getInstance().getCashConfig();
-    private final CoinConfig coinConfig = RSCash.getInstance().getCoinConfig();
-    private final CashManager cash = RSCash.getInstance().getCashManager();
+    private final CashConfig cashConfig;
+    private final CoinConfig coinConfig;
+    private final CashManager cash;
 
-    public CoinInteract(RSPlugin plugin) {
+    public CoinInteract(RSCash plugin) {
         super(plugin);
+        this.cashConfig = plugin.getCashConfig();
+        this.coinConfig = plugin.getCoinConfig();
+        this.cash = plugin.getCashManager();
     }
 
     @EventHandler

@@ -1,29 +1,31 @@
 package kr.rtuserver.cash.commands;
 
-import kr.rtuserver.lib.bukkit.api.RSPlugin;
-import kr.rtuserver.lib.bukkit.api.command.RSCommand;
-import kr.rtuserver.lib.bukkit.api.command.RSCommandData;
-import kr.rtuserver.lib.bukkit.api.utility.player.PlayerChat;
 import kr.rtuserver.cash.RSCash;
 import kr.rtuserver.cash.cash.Cash;
 import kr.rtuserver.cash.cash.CashManager;
 import kr.rtuserver.cash.cash.PlayerCash;
 import kr.rtuserver.cash.configuration.CashConfig;
 import kr.rtuserver.cash.configuration.CoinConfig;
+import kr.rtuserver.framework.bukkit.api.command.RSCommand;
+import kr.rtuserver.framework.bukkit.api.command.RSCommandData;
+import kr.rtuserver.framework.bukkit.api.utility.player.PlayerChat;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Command extends RSCommand {
+public class Command extends RSCommand<RSCash> {
 
-    private final CashManager cashManager = RSCash.getInstance().getCashManager();
-    private final CashConfig cashConfig = RSCash.getInstance().getCashConfig();
-    private final CoinConfig coinConfig = RSCash.getInstance().getCoinConfig();
+    private final CashManager cashManager;
+    private final CashConfig cashConfig;
+    private final CoinConfig coinConfig;
 
-    public Command(RSPlugin plugin) {
+    public Command(RSCash plugin) {
         super(plugin, "rscash", true);
+        this.cashManager = plugin.getCashManager();
+        this.cashConfig = plugin.getCashConfig();
+        this.coinConfig = plugin.getCoinConfig();
     }
 
     @Override
@@ -61,9 +63,9 @@ public class Command extends RSCommand {
                                 chat.send(getAudience(), replacePlayer(other, getMessage().get("modify.wrongFormat")));
                         } else chat.announce(getAudience(), getMessage().get("notFound.playerData"));
                     } else chat.announce(getAudience(), getMessage().get("notFound.cashData"));
-                } else chat.announce(getAudience(), getMessage().getCommon("notFound.onlinePlayer"));
+                } else chat.announce(getAudience(), getCommon().getMessage("notFound.onlinePlayer"));
                 return true;
-            } else chat.announce(getAudience(), getMessage().getCommon("noPermission"));
+            } else chat.announce(getAudience(), getCommon().getMessage("noPermission"));
         } else if (data.equals(0, check)) {
             if (hasPermission("rscash.check")) {
                 Player other = Bukkit.getPlayer(playerName);
@@ -75,9 +77,9 @@ public class Command extends RSCommand {
                             chat.send(getAudience(), replaceCheck(other, cashConfig.getMap().get(cash), value, getMessage().get("check.success")));
                         else chat.announce(getAudience(), getMessage().get("notFound.playerData"));
                     } else chat.announce(getAudience(), getMessage().get("notFound.cashData"));
-                } else chat.announce(getAudience(), getMessage().getCommon("notFound.onlinePLayer"));
+                } else chat.announce(getAudience(), getCommon().getMessage("notFound.onlinePLayer"));
                 return true;
-            } else chat.announce(getAudience(), getMessage().getCommon("noPermission"));
+            } else chat.announce(getAudience(), getCommon().getMessage("noPermission"));
         }
         return false;
     }

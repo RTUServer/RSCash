@@ -1,17 +1,17 @@
 package kr.rtuserver.cash.dependency;
 
-import kr.rtuserver.lib.bukkit.api.RSPlugin;
-import kr.rtuserver.lib.bukkit.api.dependencies.RSPlaceholder;
 import kr.rtuserver.cash.RSCash;
 import kr.rtuserver.cash.cash.CashManager;
+import kr.rtuserver.framework.bukkit.api.dependencies.RSPlaceholder;
 import org.bukkit.OfflinePlayer;
 
-public class PlaceholderAPI extends RSPlaceholder {
+public class PlaceholderAPI extends RSPlaceholder<RSCash> {
 
-    private final CashManager cashManager = RSCash.getInstance().getCashManager();
+    private final CashManager cashManager;
 
-    public PlaceholderAPI(RSPlugin plugin) {
+    public PlaceholderAPI(RSCash plugin) {
         super(plugin);
+        this.cashManager = plugin.getCashManager();
     }
 
     @Override

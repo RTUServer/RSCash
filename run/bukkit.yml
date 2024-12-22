@@ -1,15 +1,3 @@
-settings:
-  allow-end: false
-  warn-on-overload: true
-  permissions-file: permissions.yml
-  update-folder: update
-  plugin-profiling: false
-  connection-throttle: 4000
-  query-plugins: true
-  deprecated-verbose: default
-  shutdown-message: Server closed
-  minimum-api: none
-  use-map-color-cache: true
 spawn-limits:
   monsters: 70
   animals: 10
@@ -30,3 +18,15 @@ ticks-per:
   ambient-spawns: 1
   autosave: 6000
 aliases: now-in-commands.yml
+settings:
+  warn-on-overload: true
+  permissions-file: permissions.yml
+  update-folder: update
+  plugin-profiling: false
+  connection-throttle: 4000
+  query-plugins: true
+  deprecated-verbose: default
+  shutdown-message: Server closed
+  minimum-api: none
+  use-map-color-cache: true
+  allow-end: false

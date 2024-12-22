@@ -7,7 +7,7 @@ import kr.rtuserver.cash.configuration.CoinConfig;
 import kr.rtuserver.cash.dependency.PlaceholderAPI;
 import kr.rtuserver.cash.listeners.CoinInteract;
 import kr.rtuserver.cash.listeners.PlayerJoin;
-import kr.rtuserver.lib.bukkit.api.RSPlugin;
+import kr.rtuserver.framework.bukkit.api.RSPlugin;
 import lombok.Getter;
 import org.bukkit.permissions.PermissionDefault;
 
@@ -32,7 +32,7 @@ public class RSCash extends RSPlugin {
         cashConfig = new CashConfig(this);
         coinConfig = new CoinConfig(this);
 
-        cashManager = new CashManager();
+        cashManager = new CashManager(this);
 
         registerEvent(new PlayerJoin(this));
         registerEvent(new CoinInteract(this));

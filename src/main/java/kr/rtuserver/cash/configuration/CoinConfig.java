@@ -1,11 +1,10 @@
 package kr.rtuserver.cash.configuration;
 
-import kr.rtuserver.lib.bukkit.api.RSPlugin;
-import kr.rtuserver.lib.bukkit.api.config.RSConfiguration;
-import kr.rtuserver.lib.bukkit.api.utility.compatible.ItemCompat;
-import kr.rtuserver.lib.bukkit.api.utility.format.ComponentFormatter;
 import kr.rtuserver.cash.RSCash;
 import kr.rtuserver.cash.cash.Coin;
+import kr.rtuserver.framework.bukkit.api.config.RSConfiguration;
+import kr.rtuserver.framework.bukkit.api.utility.compatible.ItemCompat;
+import kr.rtuserver.framework.bukkit.api.utility.format.ComponentFormatter;
 import lombok.Getter;
 import org.simpleyaml.configuration.ConfigurationSection;
 
@@ -15,13 +14,14 @@ import java.util.List;
 import java.util.Map;
 
 @Getter
-public class CoinConfig extends RSConfiguration {
+public class CoinConfig extends RSConfiguration<RSCash> {
 
     private final Map<String, Coin> map = new HashMap<>();
-    private final CashConfig cashConfig = RSCash.getInstance().getCashConfig();
+    private final CashConfig cashConfig;
 
-    public CoinConfig(RSPlugin plugin) {
+    public CoinConfig(RSCash plugin) {
         super(plugin, "Coin.yml", null);
+        this.cashConfig = plugin.getCashConfig();
         setup(this);
     }
 

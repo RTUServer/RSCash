@@ -1,8 +1,8 @@
 package kr.rtuserver.cash.configuration;
 
-import kr.rtuserver.lib.bukkit.api.RSPlugin;
-import kr.rtuserver.lib.bukkit.api.config.RSConfiguration;
+import kr.rtuserver.cash.RSCash;
 import kr.rtuserver.cash.cash.Cash;
+import kr.rtuserver.framework.bukkit.api.config.RSConfiguration;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -10,11 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-public class CashConfig extends RSConfiguration {
+public class CashConfig extends RSConfiguration<RSCash> {
 
     private final Map<String, Cash> map = new HashMap<>();
 
-    public CashConfig(RSPlugin plugin) {
+    public CashConfig(RSCash plugin) {
         super(plugin, "Cash.yml", null);
         setup(this);
     }
